@@ -5,9 +5,11 @@
              x:Class="TravelRecordApp.MapPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="View"/>
+        <ToolbarItem Text="Change View"
+                     Clicked="ToolbarItem_Clicked"/>
     </ContentPage.ToolbarItems>
     <maps:Map x:Name="locationsMap"
+              IsShowingUser="False"
               HorizontalOptions="FillAndExpand"
               VerticalOptions="FillAndExpand"
               MapType="Hybrid"/>
