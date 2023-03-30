@@ -38,5 +38,10 @@ namespace TravelRecordApp
                 Navigation.PushAsync(new PostDetailsPage(selectedPost));
             }
         }
+
+        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new NewTravelPage());
+        }
     }
 }

@@ -36,6 +36,8 @@ namespace TravelRecordApp
                     DisplayAlert("Success", "Your experience was successfully updated", "Ok");
                 else
                     DisplayAlert("Failed", "Your experience failed to update", "Ok");
+
+                Navigation.PushAsync(new HomePage());
             }
         }
 
@@ -51,7 +53,7 @@ namespace TravelRecordApp
                 else
                     DisplayAlert("Failed", "Your experience failed to delete", "Ok");
 
-                Navigation.PushAsync(new HistoryPage());
+                Navigation.PushAsync(new HomePage());
             }
         }
     }

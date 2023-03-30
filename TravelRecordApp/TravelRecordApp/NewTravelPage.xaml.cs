@@ -28,15 +28,20 @@ namespace TravelRecordApp
 			using (SQLiteConnection databaseConnection = new SQLiteConnection(App.DatabaseLocation))
 			{
                 databaseConnection.CreateTable<Post>();
-                int rows = databaseConnection.Insert(post);
+				int rowsCount = 0;
 
-				if (rows > 0)
+				if (experienceEntry.Text != string.Empty && experienceEntry.Text != null)
+                    rowsCount = databaseConnection.Insert(post);
+
+				if (rowsCount > 0)
 					DisplayAlert("Success", "Your experience was successfully inserted", "Ok");
 				else
                     DisplayAlert("Failed", "Your experience failed to inserted", "Ok");
 
 				experienceEntry.Text = string.Empty;
             }
+
+			Navigation.PushAsync(new HomePage());
         }
     }
 }
