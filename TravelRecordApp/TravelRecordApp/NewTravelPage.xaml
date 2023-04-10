@@ -5,6 +5,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save"
+                     IconImageSource="diskette.png"
                      Clicked="ToolbarItem_Clicked"/>
     </ContentPage.ToolbarItems>
     
@@ -12,6 +13,36 @@
         <StackLayout>
             <Entry x:Name="experienceEntry"
                 Placeholder="Tell about you expirience"/>
+
+            <ListView x:Name="placesListView"
+                      Margin="20, 0"
+                      HorizontalOptions="FillAndExpand">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Text="{Binding name}"
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding location.address}"
+                                       TextColor="DodgerBlue"
+                                       Grid.Row="1"/>
+                                <Label Text="{Binding distance, StringFormat='{0} metters'}"
+                                       Grid.Column="1"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

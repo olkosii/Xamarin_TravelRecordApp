@@ -8,6 +8,10 @@ namespace TravelRecordApp
         public MainPage()
         {
             InitializeComponent();
+
+            var assembly = typeof(MainPage);
+
+            iconImage.Source = ImageSource.FromResource("TravelRecordApp.Assets.Images.travel.png");
         }
 
         private void loginButton_Clicked(object sender, EventArgs e)
