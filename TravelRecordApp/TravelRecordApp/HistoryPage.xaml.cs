@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelRecordApp.Helpers.Services;
 using TravelRecordApp.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -18,17 +19,22 @@ namespace TravelRecordApp
             InitializeComponent();
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            using (SQLiteConnection databaseConnection = new SQLiteConnection(App.DatabaseLocation))
-            {
-                databaseConnection.CreateTable<Post>();
-                var posts = databaseConnection.Table<Post>().ToList();
+            //using (SQLiteConnection databaseConnection = new SQLiteConnection(App.DatabaseLocation))
+            //{
+            //    databaseConnection.CreateTable<Post>();
+            //    var posts = databaseConnection.Table<Post>().ToList();
 
-                postsListView.ItemsSource = posts;
-            }
+            //    postsListView.ItemsSource = posts;
+            //}
+            postsListView.ItemsSource = null;
+
+            var posts = await FirestoreService.GetAll();
+
+            postsListView.ItemsSource = posts;
         }
 
         private void postsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)

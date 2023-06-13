@@ -1,4 +1,5 @@
 ﻿using System;
+using TravelRecordApp.Helpers.Services;
 using Xamarin.Forms;
 
 namespace TravelRecordApp
@@ -14,12 +15,15 @@ namespace TravelRecordApp
             iconImage.Source = ImageSource.FromResource("TravelRecordApp.Assets.Images.travel.png");
         }
 
-        private void loginButton_Clicked(object sender, EventArgs e)
+        private async void loginButton_Clicked(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(emailEntry.Text) || string.IsNullOrEmpty(passwordEntry.Text)){}
             else
             {
-                Navigation.PushAsync(new HomePage());
+                var loginResult = await AuthService.LoginUser(emailEntry.Text, passwordEntry.Text);
+
+                if(loginResult)
+                    await Navigation.PushAsync(new HomePage());
             }
         }
     }

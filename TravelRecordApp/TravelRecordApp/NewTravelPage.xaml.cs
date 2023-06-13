@@ -6,8 +6,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using TravelRecordApp.Helpers.Services;
 using TravelRecordApp.Models;
 using TravelRecordApp.Repositories;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -24,8 +26,12 @@ namespace TravelRecordApp
         protected async override void OnAppearing()
         {
             base.OnAppearing();
-			
-            var position = await CrossGeolocator.Current.GetPositionAsync();
+
+            var locator = CrossGeolocator.Current;
+            if (!locator.IsListening)
+                await locator.StartListeningAsync(new TimeSpan(0, 1, 0), 100);
+
+            var position = await locator.GetPositionAsync();
 
 			var places = await PlaceRepository.GetPlacesAsync(position.Latitude, position.Longitude);
 			placesListView.ItemsSource = places.results;
@@ -39,7 +45,7 @@ namespace TravelRecordApp
                 Post post = new Post()
                 {
                     Experience = experienceEntry.Text,
-                    CategoryId = selectedPlace.categories.FirstOrDefault().id,
+                    CategoryId = selectedPlace.categories.FirstOrDefault().id.ToString(),
                     CategoryName = selectedPlace.categories.FirstOrDefault().name,
                     Address = selectedPlace.location.address,
                     Latitude = selectedPlace.geocodes.main.latitude,
@@ -48,21 +54,33 @@ namespace TravelRecordApp
                     PlaceName = selectedPlace.name
                 };
 
-                using (SQLiteConnection databaseConnection = new SQLiteConnection(App.DatabaseLocation))
-                {
-                    databaseConnection.CreateTable<Post>();
-                    int rowsCount = 0;
+                //using (SQLiteConnection databaseConnection = new SQLiteConnection(App.DatabaseLocation))
+                //{
+                //    databaseConnection.CreateTable<Post>();
+                //    int rowsCount = 0;
 
-                    if (experienceEntry.Text != string.Empty && experienceEntry.Text != null)
-                        rowsCount = databaseConnection.Insert(post);
+                //    if (experienceEntry.Text != string.Empty && experienceEntry.Text != null)
+                //        rowsCount = databaseConnection.Insert(post);
 
-                    if (rowsCount > 0)
-                        DisplayAlert("Success", "Your experience was successfully inserted", "Ok");
-                    else
-                        DisplayAlert("Failed", "Your experience failed to inserted", "Ok");
+                //    if (rowsCount > 0)
+                //        DisplayAlert("Success", "Your experience was successfully inserted", "Ok");
+                //    else
+                //        DisplayAlert("Failed", "Your experience failed to inserted", "Ok");
 
-                    experienceEntry.Text = string.Empty;
-                }
+                //    experienceEntry.Text = string.Empty;
+                //}
+
+                var result = false;
+                if (experienceEntry.Text != string.Empty && experienceEntry.Text != null)
+                    result = FirestoreService.Create(post);
+                    
+
+                if (result)
+                    DisplayAlert("Success", "Your experience was successfully inserted", "Ok");
+                else
+                    DisplayAlert("Failed", "Your experience failed to inserted", "Ok");
+
+                experienceEntry.Text = string.Empty;
 
                 Navigation.PushAsync(new HomePage());
             }
