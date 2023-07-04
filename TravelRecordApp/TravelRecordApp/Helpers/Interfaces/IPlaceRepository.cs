@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TravelRecordApp.Repositories
+namespace TravelRecordApp.Helpers.Interfaces
 {
     public interface IPlaceRepository
     {

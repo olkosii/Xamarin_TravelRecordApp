@@ -1,20 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:TravelRecordApp.ViewModel"
              x:Class="TravelRecordApp.HistoryPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <viewModel:HistoryVM x:Key="viewModel"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add"
                      IconImageSource="add.png"
-                     Clicked="ToolbarItem_Clicked"/>
+                     Command="{Binding Source={StaticResource viewModel}, Path=NewTravelCommand}"/>
     </ContentPage.ToolbarItems>
     
     
     <ListView x:Name="postsListView" 
-              ItemSelected="postsListView_ItemSelected">
+              BindingContext="{StaticResource viewModel}"
+              ItemsSource="{Binding Posts}">
         <ListView.ItemTemplate>
             <DataTemplate>
-                <TextCell Text="{Binding Experience}"/>
+                <TextCell Text="{Binding Experience}" 
+                          Command="{Binding Source={StaticResource viewModel}, Path=SelectedItem}"
+                          CommandParameter="{Binding Source={x:Reference postsListView}, Path=SelectedItem}"/>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>

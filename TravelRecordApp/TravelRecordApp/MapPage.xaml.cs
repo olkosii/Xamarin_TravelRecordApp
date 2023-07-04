@@ -3,15 +3,12 @@ using Plugin.Geolocator.Abstractions;
 using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TravelRecordApp.Helpers.Services;
 using TravelRecordApp.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
-using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.Xaml;
 
 namespace TravelRecordApp

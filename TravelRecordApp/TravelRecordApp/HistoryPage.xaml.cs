@@ -1,11 +1,8 @@
 ﻿using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TravelRecordApp.Helpers.Services;
 using TravelRecordApp.Models;
+using TravelRecordApp.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,40 +11,19 @@ namespace TravelRecordApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HistoryPage : ContentPage
     {
+        private HistoryVM _viewModel;
         public HistoryPage()
         {
             InitializeComponent();
+
+            _viewModel = Resources["viewModel"] as HistoryVM;
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            //using (SQLiteConnection databaseConnection = new SQLiteConnection(App.DatabaseLocation))
-            //{
-            //    databaseConnection.CreateTable<Post>();
-            //    var posts = databaseConnection.Table<Post>().ToList();
-
-            //    postsListView.ItemsSource = posts;
-            //}
-            postsListView.ItemsSource = null;
-
-            var posts = await FirestoreService.GetAll();
-
-            postsListView.ItemsSource = posts;
-        }
-
-        private void postsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (postsListView.SelectedItem is Post selectedPost)
-            {
-                Navigation.PushAsync(new PostDetailsPage(selectedPost));
-            }
-        }
-
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new NewTravelPage());
+            _viewModel.GetPosts();
         }
     }
 }

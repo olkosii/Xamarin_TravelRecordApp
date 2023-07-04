@@ -8,16 +8,17 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using TravelRecordApp.Deserializers;
+using TravelRecordApp.Helpers.Interfaces;
 using TravelRecordApp.Models;
 using static System.Net.WebRequestMethods;
 
-namespace TravelRecordApp.Repositories
+namespace TravelRecordApp.Helpers.Services
 {
-    public class PlaceRepository : IPlaceRepository
+    public class PlaceService : IPlaceRepository
     {
         private static readonly HttpClient httpClient;
 
-        static PlaceRepository()
+        static PlaceService()
         {
             httpClient = new HttpClient();
         }
@@ -28,14 +29,14 @@ namespace TravelRecordApp.Repositories
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(Helpers.Constants.nearbyPlacesUrl),
+                RequestUri = new Uri(Constants.nearbyPlacesUrl),
                 Headers =
                 {
                     { "accept", "application/json" }
                 },
             };
 
-            request.Headers.TryAddWithoutValidation("Authorization", Helpers.Constants.authenticationKey);
+            request.Headers.TryAddWithoutValidation("Authorization", Constants.authenticationKey);
 
             using (var response = await httpClient.SendAsync(request))
             {
@@ -53,14 +54,14 @@ namespace TravelRecordApp.Repositories
                 {
                     Method = HttpMethod.Get,
                     RequestUri = new Uri(string.Concat(
-                        Helpers.Constants.nearbyPlacesUrl, "?", string.Format(Helpers.Constants.llQuery, latitude, longitude))),
+                        Constants.nearbyPlacesUrl, "?", string.Format(Constants.llQuery, latitude, longitude))),
                     Headers =
                     {
                         { "accept", "application/json" }
                     },
                 };
 
-                request.Headers.TryAddWithoutValidation("Authorization", Helpers.Constants.authenticationKey);
+                request.Headers.TryAddWithoutValidation("Authorization", Constants.authenticationKey);
 
                 using (var response = await httpClient.SendAsync(request))
                 {

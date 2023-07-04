@@ -14,17 +14,5 @@ namespace TravelRecordApp
 
             iconImage.Source = ImageSource.FromResource("TravelRecordApp.Assets.Images.travel.png");
         }
-
-        private async void loginButton_Clicked(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(emailEntry.Text) || string.IsNullOrEmpty(passwordEntry.Text)){}
-            else
-            {
-                var loginResult = await AuthService.LoginUser(emailEntry.Text, passwordEntry.Text);
-
-                if(loginResult)
-                    await Navigation.PushAsync(new HomePage());
-            }
-        }
     }
 }

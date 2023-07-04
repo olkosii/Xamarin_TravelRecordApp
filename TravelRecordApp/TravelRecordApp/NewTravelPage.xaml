@@ -1,20 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:TravelRecordApp.ViewModel"
              x:Class="TravelRecordApp.NewTravelPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <viewModel:NewTravelVM x:Key="viewModel"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save"
                      IconImageSource="diskette.png"
-                     Clicked="ToolbarItem_Clicked"/>
+                     Command="{Binding Source={StaticResource viewModel}, Path=SaveCommand}"
+                     CommandParameter="{Binding Source={StaticResource viewModel}, Path=PostIsReady}"
+                     />
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout
+            BindingContext="{StaticResource viewModel}">
             <Entry x:Name="experienceEntry"
+                   Text="{Binding Experience}"
                 Placeholder="Tell about you expirience"/>
 
             <ListView x:Name="placesListView"
+                      ItemsSource="{Binding PlacesCollection}"
+                      SelectedItem="{Binding SelectedPlace}"
                       Margin="20, 0"
                       HorizontalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
